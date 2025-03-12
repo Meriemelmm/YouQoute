@@ -52,6 +52,7 @@ class CitationController extends Controller
      */
     public function show(Citation $citation)
     {
+        $citation->increment('popularite');
         return response()->json($citation);
     }
 
@@ -117,6 +118,11 @@ class CitationController extends Controller
 });
 return response()->json($filtredQuote);
 
+      }
+      public function PlusPolaire(){
+        $citations=Citation::orderByDesc('popularite')
+        ->limit(3)->get();
+        return response()->json(['message'=>"recupere plus populaire  succeful",'data'=>$citations]);
       }
 
 
