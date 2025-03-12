@@ -80,4 +80,41 @@ class CitationController extends Controller
       ],200);
         
     }
-}
+    public function getCitation(){
+       
+
+        
+        $randomCitations = Citation::inRandomOrder()->first(); 
+    
+      
+    
+        return response()->json(['message'=>"get d une facon aletoire succeful",'data'=>$randomCitations]);
+    }
+    public function getCitations($citation=1){
+       
+
+        
+            $randomCitations = Citation::inRandomOrder()->take($citation)->get(); 
+        
+          
+        
+            return response()->json(['message'=>"get d une facon aletoire succeful",'data'=>$randomCitations]);
+        }
+     
+     
+     
+        public function   filterByLength(Request $request,$longeur ){
+            $citations= Citation::all();
+        $filtredQuote=$citations->filter(function () use($citations,$longeur){
+
+    return  str_word_count($citations->texte)==$longeur;
+
+});
+return response()->json($filtredQuote);
+
+      }
+
+
+
+    }
+
