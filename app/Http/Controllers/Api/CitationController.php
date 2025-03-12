@@ -103,11 +103,16 @@ class CitationController extends Controller
      
      
      
-        public function   filterByLength(Request $request,$longeur ){
+        public function   filterByLength(Request $request ){
+            $longeur = $request->input('longeur');
+            if (!$longeur) {
+                return response()->json(['error' => 'Le paramètre longeur est requis'], 400);
+            }
+        
             $citations= Citation::all();
-        $filtredQuote=$citations->filter(function () use($citations,$longeur){
+        $filtredQuote=$citations->filter(function ($citation) use($citations,$longeur){
 
-    return  str_word_count($citations->texte)==$longeur;
+    return  str_word_count($citation->texte)==$longeur;
 
 });
 return response()->json($filtredQuote);
