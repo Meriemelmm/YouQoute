@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('citations', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->text('texte');
+            $table->string('author')->nullable();
+            $table->integer('popularite')->default(0);
         });
     }
 

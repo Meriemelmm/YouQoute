@@ -27,14 +27,25 @@ class CitationController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-     $validated=$request->validate
-     (['text'=>['required','string','max:225']]);
+{
+    $validated = $request->validate([
+        'texte' => ['required', 'string', 'max:225'],
+        'author' => ['required', 'string', 'max:225']
+    ]);
 
-      $citation=Citation::create(['text'=>$request->text]);
-      return response()->json(['message'=>"citation created succeful",
-      'data'=>$citation],200);
-    }
+
+    $citation = Citation::create([
+        'texte' => $request->texte,  
+        'author' => $request->author
+    ]);
+    
+
+    return response()->json([
+        'message' => "Citation created successfully",
+        'data' => $citation
+    ], 200);
+}
+
 
     /**
      * Display the specified resource.
@@ -48,13 +59,14 @@ class CitationController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Citation $citation)
-    {
-        $validated=$request->validate
-        (['text'=>['required','string','max:225']]);
+    {$validated=$request->validate
+        (['texte'=>['required','string','max:225'],
+       'author'=>['required','string','max:225']]);
    
-         $citation=$citation->update(['text'=>$request->text]);
+         $updated=$citation->update(['texte'=>$request->texte,
+         'author'=>$request->author]);
          return response()->json(['message'=>"citation updated succeful",
-         'data'=>$citation],200);
+         'data'=>$updated],200);
        } 
     
 
