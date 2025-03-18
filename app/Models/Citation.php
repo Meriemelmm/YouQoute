@@ -10,6 +10,7 @@ class Citation extends Model
     protected $fillable = [
         'texte',
         'author',
+        'user_id'
     
         
     ];

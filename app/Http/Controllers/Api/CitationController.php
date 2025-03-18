@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Citation;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CitationController extends Controller
 {
     /**
+     *  use AuthorizesRequests;
      * Display a listing of the resource.
      */
+    
+    
+     use AuthorizesRequests;
     public function index()
     {
         $citations=Citation::all();
@@ -28,6 +34,11 @@ class CitationController extends Controller
      */
     public function store(Request $request)
 {
+   
+     $user = Auth::user(); 
+     if (!$user) {
+         return response()->json(['error' => 'Utilisateur non authentifié'], 401); 
+     }
     $validated = $request->validate([
         'texte' => ['required', 'string', 'max:225'],
         'author' => ['required', 'string', 'max:225']
@@ -36,7 +47,9 @@ class CitationController extends Controller
 
     $citation = Citation::create([
         'texte' => $request->texte,  
-        'author' => $request->author
+        'author' => $request->author,
+        'user_id'=>$user->id,
+       
     ]);
     
 
@@ -60,7 +73,9 @@ class CitationController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Citation $citation)
-    {$validated=$request->validate
+    {
+        $this->authorize('update', $citation);
+        $validated=$request->validate
         (['texte'=>['required','string','max:225'],
        'author'=>['required','string','max:225']]);
    
@@ -76,6 +91,7 @@ class CitationController extends Controller
      */
     public function destroy(Citation $citation)
     {
+        $this->authorize('delete', $citation);
       $citation->delete();
       return response()->json(['message'=>"citation deleted succeful"
       ],200);

@@ -5,11 +5,13 @@ use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\Api\CitationController;
 use  App\Http\Controllers\Api\UserController;
 
-Route::apiResource('citations', CitationController::class);
+Route::apiResource('citations', CitationController::class)->middleware('auth:sanctum');
+
+Route::apiResource('Category', CitationController::class)->middleware('auth:sanctum');
 Route::get('random/{citation}', [CitationController::class, 'getCitations']);
 Route::get('random', [CitationController::class, 'getCitation']);
 Route::post('Citations/filter', [CitationController::class, 'filterByLength']);
- Route::get('Citations/populaire', [CitationController::class, 'PlusPolaire']);
+Route::get('Citations/populaire', [CitationController::class, 'PlusPolaire']);
 
 
 
