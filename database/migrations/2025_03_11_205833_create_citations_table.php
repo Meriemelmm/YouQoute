@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('texte');
             $table->string('author')->nullable();
             $table->integer('popularite')->default(0);
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
         });
     }
 
