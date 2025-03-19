@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('citations', function (Blueprint $table) {
+        Schema::create('favoris', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->text('texte');
-            $table->string('author')->nullable();
-            $table->integer('popularite')->default(0);
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->softDeletes();
+            $table->foreignId('citation_id')->constrained()->cascadeOnDelete();
         });
     }
 
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('citations');
+        Schema::dropIfExists('favoris');
     }
 };

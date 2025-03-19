@@ -32,7 +32,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
 
-        $this->authorize('create');
+
+        $this->authorize('create', Category::class);
         $validated = $request->validate(['name_category' => ['required', 'string', 'max:225']]);
 
         $categorie = Category::create(['name_category' => $request->name_category]);
@@ -91,7 +92,7 @@ class CategoryController extends Controller
         
         $this->authorize('delete',$Category);
       $Category->delete();
-      return response()->json(['message'=>"citation deleted succeful"
+      return response()->json(['message'=>"category deleted succeful"
       ],200);
 
 }}
