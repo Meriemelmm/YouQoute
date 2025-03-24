@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Citation;
+use App\Models\Category;
 use Illuminate\Http\Request;
+
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CitationController extends Controller
@@ -41,8 +43,29 @@ class CitationController extends Controller
      }
     $validated = $request->validate([
         'texte' => ['required', 'string', 'max:225'],
-        'author' => ['required', 'string', 'max:225']
+        'author' => ['required', 'string', 'max:225'],
+        'categories'=>'array|required',
+        'tags'=>'array|required'
+       
     ]);
+    $categories = $request->input('categories');
+
+   
+    foreach ($categories as $categoryId) {
+        if (!Category::find($categoryId)) {
+            return response()->json([
+                'error' => "La catégorie avec l'ID $categoryId n'existe pas"
+            ], 400);
+        }
+    }
+    $tags=$request->input('tags');
+    foreach ($tags as $tagId) {
+        if (!Category::find($tagId)) {
+            return response()->json([
+                'error' => "Le tag  avec l'ID $tagId n'existe pas"
+            ], 400);
+        }
+    }
 
 
     $citation = Citation::create([
@@ -51,11 +74,17 @@ class CitationController extends Controller
         'user_id'=>$user->id,
        
     ]);
+     $citation->categorie()->sync($request->categories);
+     $citation->tags()->sync($request->tags);
+
     
 
     return response()->json([
         'message' => "Citation created successfully",
-        'data' => $citation
+        'data' => $citation,
+        'categories'=>$categories,
+        'tags'=>$tags
+        
     ], 200);
 }
 

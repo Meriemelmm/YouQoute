@@ -12,5 +12,8 @@ class Tag extends Model
     
         
     ];
+    public function Citations(){
+        return $this->belongsToMany(Citation::class,'tag_Citation');
+    }
 }
 

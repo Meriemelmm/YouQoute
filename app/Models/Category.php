@@ -13,4 +13,7 @@ class Category extends Model
     
         
     ];
+    public function qoute(){
+    return  $this->belongsToMany(Citation::class,'category_citation');
+    }
 }

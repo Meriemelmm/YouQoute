@@ -20,5 +20,11 @@ class Citation extends Model
      
         return $this->belongsTo(User::class);
     }
+    public function categorie(){
+        return $this->belongsToMany(Category::class,'category_citation');
+    }
+    public function tags(){
+        return $this->belongsToMany(Tag::class,'tag_Citation');
+    }
    
 }
