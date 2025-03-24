@@ -51,18 +51,18 @@ class CitationController extends Controller
     $categories = $request->input('categories');
 
    
-    foreach ($categories as $categoryId) {
-        if (!Category::find($categoryId)) {
+    foreach ($categories as $categorieName) {
+        if (!Category::find($categorieName)) {
             return response()->json([
-                'error' => "La catégorie avec l'ID $categoryId n'existe pas"
+                'error' => "La catégorie avec l'ID $categorieName n'existe pas"
             ], 400);
         }
     }
     $tags=$request->input('tags');
-    foreach ($tags as $tagId) {
-        if (!Category::find($tagId)) {
+    foreach ($tags as $tagName) {
+        if (!Category::find($tagName)) {
             return response()->json([
-                'error' => "Le tag  avec l'ID $tagId n'existe pas"
+                'error' => "Le tag  avec l'ID $tagName n'existe pas"
             ], 400);
         }
     }
